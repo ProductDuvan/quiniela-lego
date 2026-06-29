@@ -176,7 +176,7 @@ export default function App() {
   const c = fmt();
 
   if (loading) {
-    return <div style={S.loading}><RefreshCw size={20} style={{ animation: "spin 1s linear infinite" }} /> Cargando quiniela…</div>;
+    return <div style={S.loading}><RefreshCw size={20} style={{ animation: "spin 1s linear infinite" }} /> Cargando Faminiela…</div>;
   }
 
   return (
@@ -188,7 +188,7 @@ export default function App() {
         <div style={S.overlay} onClick={dismissWelcome}>
           <div style={S.welcomeCard} onClick={(e) => e.stopPropagation()}>
             <div style={S.welcomeEmoji}>🏆</div>
-            <h2 style={S.welcomeTitle}>¡Bienvenido a la quiniela familiar!</h2>
+            <h2 style={S.welcomeTitle}>¡Bienvenido a la Faminiela!</h2>
             <p style={S.welcomeIntro}>Adivina quién gana cada partido de la Round of 32 del Mundial. El que más le atine se lleva el premio.</p>
             <div style={S.welcomeRules}>
               <div style={S.welcomeRule}><span style={S.ruleNum}>1</span> Regístrate con tu nombre y un avatar.</div>
@@ -236,13 +236,13 @@ export default function App() {
         {/* HEADER */}
         <div style={{ textAlign: "center", marginBottom: 14 }}>
           <div style={S.eyebrow}><Trophy size={15} /> FIFA World Cup 2026</div>
-          <h1 style={S.h1}>Quiniela · Round of 32</h1>
+          <h1 style={S.h1}>Faminiela · Round of 32</h1>
         </div>
 
         {/* COUNTDOWN / LOCK */}
         <div style={{ ...S.countdown, background: registrationLocked ? "#3f1d1d" : "#1e293b", borderColor: registrationLocked ? "#ef4444" : "#334155" }}>
           {registrationLocked ? (
-            <div style={S.lockRow}><Lock size={18} /> Todos los partidos han iniciado · quinielas cerradas</div>
+            <div style={S.lockRow}><Lock size={18} /> Todos los partidos han iniciado · Faminiela cerrada</div>
           ) : (
             <>
               <div style={S.countLabel}><Clock size={13} /> Próximo partido cierra en</div>
@@ -350,7 +350,7 @@ export default function App() {
               </div>
             ) : (
               <button onClick={() => setShowAdd(true)} style={S.addBtn}>
-                <UserPlus size={16} /> Registrarme en esta quiniela
+                <UserPlus size={16} /> Registrarme en la Faminiela
               </button>
             )}
           </div>
@@ -370,7 +370,7 @@ export default function App() {
             {/* Progreso X de 16 */}
             <div style={S.progressLabel}>
               {myComplete
-                ? <span style={{ color: "#22c55e", fontWeight: 700 }}>✓ ¡Quiniela completa! Ya elegiste los {MATCHES.length} partidos.</span>
+                ? <span style={{ color: "#22c55e", fontWeight: 700 }}>✓ ¡Faminiela completa! Ya elegiste los {MATCHES.length} partidos.</span>
                 : <>Llevas <strong>{myPicksCount}</strong> de {MATCHES.length} partidos elegidos.</>}
             </div>
             <div style={S.progressTrack}>
