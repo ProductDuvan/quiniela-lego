@@ -5,24 +5,24 @@ import { supabase } from "./supabaseClient";
 // Cada partido lleva su hora de inicio UTC. El bloqueo es por partido:
 // un partido se cierra individualmente cuando arranca, y el registro
 // permanece abierto mientras haya al menos un partido futuro.
-// Todas las horas están en zona horaria CDMX (UTC-6). startUTC = hora CDMX + 6h.
+// startUTC tomados directamente de football-data.org. Horas CDMX = UTC-6.
 const MATCHES = [
-  { id: 73, startUTC: "2026-06-29T01:00:00Z", date: "Dom 28 Jun", time: "19:00 CDMX", venue: "Los Angeles", a: "Sudáfrica", b: "Canadá", fa: "🇿🇦", fb: "🇨🇦" },
-  { id: 74, startUTC: "2026-06-29T07:00:00Z", date: "Lun 29 Jun", time: "01:00 CDMX", venue: "Monterrey", a: "Países Bajos", b: "Marruecos", fa: "🇳🇱", fb: "🇲🇦" },
-  { id: 75, startUTC: "2026-06-29T23:00:00Z", date: "Lun 29 Jun", time: "17:00 CDMX", venue: "Houston", a: "Brasil", b: "Japón", fa: "🇧🇷", fb: "🇯🇵" },
-  { id: 76, startUTC: "2026-06-30T02:30:00Z", date: "Lun 29 Jun", time: "20:30 CDMX", venue: "Boston", a: "Alemania", b: "Paraguay", fa: "🇩🇪", fb: "🇵🇾" },
-  { id: 77, startUTC: "2026-06-30T07:00:00Z", date: "Mar 30 Jun", time: "01:00 CDMX", venue: "Ciudad de México", a: "México", b: "Ecuador", fa: "🇲🇽", fb: "🇪🇨" },
-  { id: 78, startUTC: "2026-06-30T23:00:00Z", date: "Mar 30 Jun", time: "17:00 CDMX", venue: "Dallas", a: "Costa de Marfil", b: "Noruega", fa: "🇨🇮", fb: "🇳🇴" },
-  { id: 79, startUTC: "2026-07-01T03:00:00Z", date: "Mar 30 Jun", time: "21:00 CDMX", venue: "Nueva York/NJ", a: "Francia", b: "Suecia", fa: "🇫🇷", fb: "🇸🇪" },
-  { id: 80, startUTC: "2026-07-01T06:00:00Z", date: "Mié 01 Jul", time: "00:00 CDMX", venue: "San Francisco Bay", a: "Estados Unidos", b: "Bosnia", fa: "🇺🇸", fb: "🇧🇦" },
-  { id: 81, startUTC: "2026-07-01T22:00:00Z", date: "Mié 01 Jul", time: "16:00 CDMX", venue: "Atlanta", a: "Inglaterra", b: "RD del Congo", fa: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", fb: "🇨🇩" },
-  { id: 82, startUTC: "2026-07-02T02:00:00Z", date: "Mié 01 Jul", time: "20:00 CDMX", venue: "Seattle", a: "Bélgica", b: "Senegal", fa: "🇧🇪", fb: "🇸🇳" },
-  { id: 83, startUTC: "2026-07-02T09:00:00Z", date: "Jue 02 Jul", time: "03:00 CDMX", venue: "Vancouver", a: "Suiza", b: "Argelia", fa: "🇨🇭", fb: "🇩🇿" },
-  { id: 84, startUTC: "2026-07-03T01:00:00Z", date: "Jue 02 Jul", time: "19:00 CDMX", venue: "Los Angeles", a: "España", b: "Austria", fa: "🇪🇸", fb: "🇦🇹" },
-  { id: 85, startUTC: "2026-07-03T05:00:00Z", date: "Jue 02 Jul", time: "23:00 CDMX", venue: "Toronto", a: "Portugal", b: "Croacia", fa: "🇵🇹", fb: "🇭🇷" },
-  { id: 86, startUTC: "2026-07-03T07:30:00Z", date: "Vie 03 Jul", time: "01:30 CDMX", venue: "Kansas City", a: "Colombia", b: "Ghana", fa: "🇨🇴", fb: "🇬🇭" },
-  { id: 87, startUTC: "2026-07-04T00:00:00Z", date: "Vie 03 Jul", time: "18:00 CDMX", venue: "Dallas", a: "Australia", b: "Egipto", fa: "🇦🇺", fb: "🇪🇬" },
-  { id: 88, startUTC: "2026-07-04T04:00:00Z", date: "Vie 03 Jul", time: "22:00 CDMX", venue: "Miami", a: "Argentina", b: "Cabo Verde", fa: "🇦🇷", fb: "🇨🇻" },
+  { id: 73, startUTC: "2026-06-28T19:00:00Z", date: "Dom 28 Jun", time: "13:00 CDMX", venue: "Los Angeles",      a: "Sudáfrica",        b: "Canadá",     fa: "🇿🇦", fb: "🇨🇦" },
+  { id: 74, startUTC: "2026-06-29T17:00:00Z", date: "Lun 29 Jun", time: "11:00 CDMX", venue: "Houston",          a: "Brasil",           b: "Japón",      fa: "🇧🇷", fb: "🇯🇵" },
+  { id: 75, startUTC: "2026-06-29T20:30:00Z", date: "Lun 29 Jun", time: "14:30 CDMX", venue: "Boston",           a: "Alemania",         b: "Paraguay",   fa: "🇩🇪", fb: "🇵🇾" },
+  { id: 76, startUTC: "2026-06-30T01:00:00Z", date: "Lun 29 Jun", time: "19:00 CDMX", venue: "Monterrey",        a: "Países Bajos",     b: "Marruecos",  fa: "🇳🇱", fb: "🇲🇦" },
+  { id: 77, startUTC: "2026-06-30T17:00:00Z", date: "Mar 30 Jun", time: "11:00 CDMX", venue: "Dallas",           a: "Costa de Marfil",  b: "Noruega",    fa: "🇨🇮", fb: "🇳🇴" },
+  { id: 78, startUTC: "2026-06-30T21:00:00Z", date: "Mar 30 Jun", time: "15:00 CDMX", venue: "Nueva York/NJ",    a: "Francia",          b: "Suecia",     fa: "🇫🇷", fb: "🇸🇪" },
+  { id: 79, startUTC: "2026-07-01T01:00:00Z", date: "Mar 30 Jun", time: "19:00 CDMX", venue: "Ciudad de México", a: "México",           b: "Ecuador",    fa: "🇲🇽", fb: "🇪🇨" },
+  { id: 80, startUTC: "2026-07-01T16:00:00Z", date: "Mié 01 Jul", time: "10:00 CDMX", venue: "Atlanta",          a: "Inglaterra",       b: "RD del Congo", fa: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", fb: "🇨🇩" },
+  { id: 81, startUTC: "2026-07-01T20:00:00Z", date: "Mié 01 Jul", time: "14:00 CDMX", venue: "Seattle",          a: "Bélgica",          b: "Senegal",    fa: "🇧🇪", fb: "🇸🇳" },
+  { id: 82, startUTC: "2026-07-02T00:00:00Z", date: "Mié 01 Jul", time: "18:00 CDMX", venue: "San Francisco Bay",a: "Estados Unidos",   b: "Bosnia",     fa: "🇺🇸", fb: "🇧🇦" },
+  { id: 83, startUTC: "2026-07-02T19:00:00Z", date: "Jue 02 Jul", time: "13:00 CDMX", venue: "Los Angeles",      a: "España",           b: "Austria",    fa: "🇪🇸", fb: "🇦🇹" },
+  { id: 84, startUTC: "2026-07-02T23:00:00Z", date: "Jue 02 Jul", time: "17:00 CDMX", venue: "Toronto",          a: "Portugal",         b: "Croacia",    fa: "🇵🇹", fb: "🇭🇷" },
+  { id: 85, startUTC: "2026-07-03T03:00:00Z", date: "Jue 02 Jul", time: "21:00 CDMX", venue: "Vancouver",        a: "Suiza",            b: "Argelia",    fa: "🇨🇭", fb: "🇩🇿" },
+  { id: 86, startUTC: "2026-07-03T18:00:00Z", date: "Vie 03 Jul", time: "12:00 CDMX", venue: "Dallas",           a: "Australia",        b: "Egipto",     fa: "🇦🇺", fb: "🇪🇬" },
+  { id: 87, startUTC: "2026-07-03T22:00:00Z", date: "Vie 03 Jul", time: "16:00 CDMX", venue: "Miami",            a: "Argentina",        b: "Cabo Verde", fa: "🇦🇷", fb: "🇨🇻" },
+  { id: 88, startUTC: "2026-07-04T01:30:00Z", date: "Vie 03 Jul", time: "19:30 CDMX", venue: "Kansas City",      a: "Colombia",         b: "Ghana",      fa: "🇨🇴", fb: "🇬🇭" },
 ];
 
 const AVATARS = ["⚽", "🏆", "🦁", "🐉", "🔥", "⭐", "🚀", "🎯", "👑", "🐺", "🦅", "🐲", "💎", "🌟", "⚡", "🎮"];
