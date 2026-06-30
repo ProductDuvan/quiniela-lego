@@ -273,7 +273,7 @@ export default function App() {
               const podiumOrder = top.length === 3 ? [top[1], top[0], top[2]]
                 : top.length === 2 ? [top[1], top[0]]
                 : top;
-              const heights = { 0: 64, 1: 92, 2: 48 }; // por lugar real
+              const heights = { 0: 92, 1: 64, 2: 48 }; // por lugar real: 1º más alto
               const realRank = (p) => ranked.indexOf(p); // 0,1,2
               const medal = ["🥇", "🥈", "🥉"];
               return (
