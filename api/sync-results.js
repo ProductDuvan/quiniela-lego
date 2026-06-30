@@ -92,12 +92,19 @@ export default async function handler(req, res) {
       const mapped = matchTeamToSide(home, away);
       if (!mapped) continue; // partido que no es de nuestro R32
 
-      // score.winner: "HOME_TEAM" | "AWAY_TEAM" | "DRAW" | null
-      // En knockouts no hay empate final: si hay penales, el winner ya refleja el avance.
+      // score.winner puede ser null cuando el partido va a penales (PENALTY_SHOOTOUT).
+      // En ese caso la API deja winner=null pero el marcador fullTime refleja el total
+      // incluyendo penales — usamos eso para determinar quién avanzó.
       const w = fx.score?.winner;
       let winner = null;
       if (w === "HOME_TEAM") winner = mapped.homeSide;
       else if (w === "AWAY_TEAM") winner = mapped.awaySide;
+      else if (!w && fx.score?.duration === "PENALTY_SHOOTOUT") {
+        const homeGoals = fx.score?.fullTime?.home ?? 0;
+        const awayGoals = fx.score?.fullTime?.away ?? 0;
+        if (homeGoals > awayGoals) winner = mapped.homeSide;
+        else if (awayGoals > homeGoals) winner = mapped.awaySide;
+      }
 
       // Solo guardamos si ya terminó (o ganador definido)
       if (winner && (fx.status === "FINISHED" || fx.status === "AWARDED")) {
