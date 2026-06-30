@@ -274,7 +274,8 @@ export default function App() {
                 : top.length === 2 ? [top[1], top[0]]
                 : top;
               const heights = { 0: 92, 1: 64, 2: 48 }; // por lugar real: 1º más alto
-              const realRank = (p) => ranked.indexOf(p); // 0,1,2
+              // Rank basado en puntaje: jugadores empatados reciben el mismo rango y la misma altura
+              const realRank = (p) => ranked.filter(r => score(r.id) > score(p.id)).length;
               const medal = ["🥇", "🥈", "🥉"];
               return (
                 <div style={S.podium}>
