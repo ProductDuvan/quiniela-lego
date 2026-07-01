@@ -292,11 +292,13 @@ export default function App() {
                         <div style={S.podiumScore}>{s}</div>
                         <div style={{
                           ...S.podiumBlock,
-                          height: heights[r],
+                          height: heights[Math.min(r, 2)],
                           background: `linear-gradient(180deg, ${p.color}, ${p.color}99)`,
                         }}>
-                          <span style={S.podiumMedal}>{medal[r]}</span>
-                          <span style={S.podiumPlace}>{r + 1}º</span>
+                          <span style={S.podiumMedal}>{medal[Math.min(r, 2)]}</span>
+                          <span style={S.podiumPlace}>
+                            {podiumOrder.filter(x => realRank(x) === r).length > 1 ? "Empate" : `${r + 1}º`}
+                          </span>
                         </div>
                       </div>
                     );
@@ -308,12 +310,13 @@ export default function App() {
             {/* Resto (4º en adelante) como lista */}
             {ranked.length > 3 && (
               <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 12 }}>
-                {ranked.slice(3).map((p, idx) => {
+                {ranked.slice(3).map((p) => {
                   const s = score(p.id);
                   const isMe = p.id === deviceId;
+                  const pos = ranked.filter(r => score(r.id) > score(p.id)).length + 1;
                   return (
                     <div key={p.id} style={S.rankRow}>
-                      <span style={S.rankPos}>{idx + 4}</span>
+                      <span style={S.rankPos}>{pos}</span>
                       <span style={{ fontSize: 22 }}>{p.avatar}</span>
                       <span style={{ flex: 1, fontWeight: 700, color: p.color }}>
                         {p.name}{isMe && <span style={S.youTag}>tú</span>}
